@@ -10,11 +10,18 @@
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include <stdbool.h> //Defines bool data type for isFixed in struct Cat
-#include <stddef.h>  // Allows for size_t. Could also use stdio.h if needed later
-#include <time.h>
-#include "config.h" // For MAX's'
+#include <cstddef>  // Allows for size_t. Could also use stdio.h if needed later
+#include <ctime>
+#include "Cat.h"
 
+//----------------------------------------------------------------------------------------------------------------------
+typedef size_t CurrentCatNum;
+
+extern Cat* catDatabaseHeadPointer ;
+extern CurrentCatNum currentCatNum;
+
+//---------------------------------------------------------------------------------------------------------------------
+/*
 //Defines the enum's
 typedef enum {UNKNOWN_GENDER,MALE,FEMALE} Gender;
 typedef enum {UNKNOWN_BREED,MAINE_COON,MANX,SHORTHAIR,PERSIAN,SPHYNX} Breed;
@@ -31,7 +38,6 @@ typedef struct tm Birthday;
 struct Cat {
     //Data type           Data name
     char                name[MAX_NAME_LENGTH];
-    //struct tm			tm;
     Gender              gender;         //enum genders declared above
     Breed               breed;          //enum breeds declared above
     bool                isFixed;
@@ -44,7 +50,7 @@ struct Cat {
 
 
 extern int initializeDatabase();
-extern struct Cat catdb[MAX_CATS]; //This doesnt allocate any memory, just says this fn is declared in catDatabase.c
+extern struct Cat catdb[MAX_CATS]; //This doesn't allocate any memory, just says this fn is declared in catDatabase.c
 
 //Function Declarations
 extern bool isdbFull();
@@ -55,3 +61,4 @@ extern bool isCollarValid(Color collarColor1, Color collarColor2);
 extern bool isFixingCatPossible(NumCats index);
 extern Birthday makeBirthday(const char birthday[]);
 extern bool isBirthdayValid(Birthday birthday);
+ */

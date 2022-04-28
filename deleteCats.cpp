@@ -1,37 +1,40 @@
 ///////////////////////////////////////////////////////////////////////////////
 ///         University of Hawaii, College of Engineering
-/// @brief  ee205_lab_08d_animal_farm_1_to_clion - EE 205 - Spr 2022
+/// @brief  ee205_lab_10d_animal_farm_2 - EE 205 - Spr 2022
 ///
 /// @file deleteCats.cpp
 /// @version 1.0
 ///
 /// @author Zack Lown <zacklown@hawaii.edu>
-/// @date   18_Mar_2022
+/// @date   27_Apr_2022
 ///////////////////////////////////////////////////////////////////////////////
 #include "deleteCats.h"
-
 #include "catDatabase.h"
-#include <stdio.h>//For printf
-#include <string.h>//For memset
 
-extern NumCats currentCatNum; // Declared externally in catDatabase.c
-
-int deleteAllCats(){
-    memset(catdb,0,sizeof(catdb));//Resets all data in catdb to 0
-    currentCatNum = 0;
-    return 0;
-}
-
-int deleteCat(const NumCats index){
-    if( index > currentCatNum ){
-        fprintf(stderr, "%s: Cannot Delete this item at index %d as it's outside of the database.",PROGRAM_NAME, (int)index);
-        return -1;
-    }
-    else{
-        for(NumCats i = index - 1; i < currentCatNum - 1; i++){
-            catdb[i]= catdb[i+1]; //Move the next element(i+1) one down (i)
-        }
-        currentCatNum -=1;//Moves the index back one
+int deleteCat(const Cat* index) {
+    if(index == catDatabaseHeadPointer){//If index is for the first cat.
+        catDatabaseHeadPointer = catDatabaseHeadPointer->next;// Because this was the first cat, set the catDatabaseHeadPointer to the next cat in the DB.
+        delete index; // Delete the cat
+        currentCatNum = currentCatNum-1;
         return 0;
     }
-}
+    //Done in the case of the cat not being the first
+    Cat* traversingCat = catDatabaseHeadPointer; //This sets the index to the first cat; this'll be traversed in the for loop
+    for(int i = 0; currentCatNum; i++){
+        if(traversingCat->next == index){//If the next value of traversing cat is equal to the one of the index,
+            traversingCat->next = index->next;//Set the next value of the traversing cat to the next value of the cat being deleted as not to break the linked list
+            delete index;//Delete the cat
+            currentCatNum= currentCatNum -1;
+            return 0;
+        }//End of if
+    }//End of for loop
+    return 1;//Cat not in db
+}//End of deleteCat
+
+int deleteAllCats() {
+    while(catDatabaseHeadPointer!= nullptr){
+        deleteCat(catDatabaseHeadPointer);//Once the first Cat is deleted(the one with catDBheadpointer), the 2nd cat is assigned catDBheadpointer and then deleted and so on
+    }//End of while
+    return 0;
+}//End of deleteAllCats
+

@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 ///         University of Hawaii, College of Engineering
-/// @brief  ee205_lab_08d_animal_farm_1_to_clion - EE 205 - Spr 2022
+/// @brief  ee205_lab_10d_animal_farm_2 - EE 205 - Spr 2022
 ///
 /// @file main.cpp
 /// @version 1.0
@@ -9,18 +9,132 @@
 /// @date   18_Mar_2022
 ///////////////////////////////////////////////////////////////////////////////
 #include "addCats.h"
-#include "catDatabase.h"
 #include "deleteCats.h"
 #include "reportCats.h"
 #include "updateCats.h"
+#include <cassert>		//For assert
+#include <cstdio>      // For strings etc
+#include <iostream>
 
-#include <stdlib.h>		//For exit Success and exit Failure
-#include <assert.h>		//For assert
-#include <stdio.h>      // For strings etc
+using namespace std;
 
 int main(){ // int argc, char* argv[] have been removed as they are not used in this program
-    setvbuf(stdout, NULL, _IONBF, 0);//Fixes errors with things being printed out of order
+    setvbuf(stdout, nullptr, _IONBF, 0);//Fixes errors with things being printed out of order
     setvbuf(stdin, nullptr, _IONBF, 0);
+    cout<< "Starting " << PROGRAM_NAME << endl;
+//#ifdef DEBUG
+//    {
+      // Verify that a cat's default values are set
+    const Weight UNKNOWN_WEIGHT = -1 ;
+    #define MAX_NAME1    "1234567890123456789012345678901234567890123456789"
+    #define ILLEGAL_NAME "12345678901234567890123456789012345678901234567890"
+
+      Cat testCat = Cat();
+      assert(testCat.getName() != nullptr );
+      assert(strcmp(testCat.getName(), "") == 0);
+      assert(testCat.getGender() == UNKNOWN_GENDER);
+      assert(testCat.getBreed() == UNKNOWN_BREED);
+      assert(testCat.getIsFixed() == false);
+      assert(testCat.getWeight() == UNKNOWN_WEIGHT);
+      assert(!testCat.getIsFixed());
+      assert(!testCat.validate());  // The default cat is invalid
+
+      // Test for NULL name
+      try {
+         testCat.setName(nullptr);
+         assert(false); // We should never get here
+      } catch (exception const &e) {}
+
+      // Test for empty name
+      try {
+         testCat.setName("");
+         assert(false); // We should never get here
+      } catch (exception const &e) {}
+
+      // Test valid names
+      testCat.setName("A");       // A 1 character name is valid
+      testCat.setName(MAX_NAME1); // A MAX_NAME1 name is valid
+
+      // Test for name too large
+      try {
+         testCat.setName(ILLEGAL_NAME);
+         assert(false); // We should never get here
+      } catch (exception const &e) {}
+
+      testCat.setGender(FEMALE);
+
+      testCat.fixCat();
+      assert(testCat.getIsFixed());
+
+      // Test for Weight <= 0
+      try {
+         testCat.setWeight(0);
+         assert(false); // We should never get here
+      } catch (exception const &e) {}
+
+      testCat.setWeight(1.0 / 1024);
+      assert(testCat.getWeight() == 1.0 / 1024);
+
+
+    bool result ;
+    result = addCat( new Cat( "Loki", MALE, PERSIAN, 1.0 )) ;
+    assert( result ) ;
+    if( !result ) throw logic_error (PROGRAM_NAME ": addCat() failed" ) ;
+    result = addCat( new Cat( "Milo", MALE, MANX , 1.1 )) ;
+    assert( result ) ;
+    result = addCat( new Cat( "Bella", FEMALE, MAINE_COON, 1.2 )) ;
+    assert( result ) ;
+    result = addCat( new Cat( "Kali", FEMALE, SHORTHAIR, 1.3 )) ;
+    assert( result ) ;
+    result = addCat( new Cat( "Trin", FEMALE, MANX, 1.4 )) ;
+    assert( result ) ;
+    result = addCat( new Cat( "Chili", MALE, SHORTHAIR, 1.5 )) ;
+    assert( result ) ;
+
+
+    Cat* bella = findCatByName("Bella");
+    assert(bella != nullptr);
+    // Test not finding a cat
+    assert(findCatByName("Bella's not here") == nullptr);
+
+
+
+    bella = nullptr;
+
+    printAllCats() ;
+    deleteAllCats();
+    printAllCats();
+
+    cout<< "Done with " << PROGRAM_NAME << endl;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*----------------------------------------------------------------------------------------------------------------------------------------
     if(DEBUGMODE){
         //-----------------------------------------Check addCats & db-------------------------------------------
         printf("\n----addCats & db checking----");
@@ -84,7 +198,7 @@ int main(){ // int argc, char* argv[] have been removed as they are not used in 
     }//End of debug code
 
     if(EXTENSIVEDEBUG){
-        /*
+
         //Provided main program testing
             #define MAX_NAME1 "1234567890123456789012345678901234567890123456789"
             #define MAX_NAME2 "DIFFERENT 123456789012345678901234567890123456789"
@@ -136,6 +250,6 @@ int main(){ // int argc, char* argv[] have been removed as they are not used in 
             printAllCats() ;
             printf( "Done with %s\n", PROGRAM_NAME ) ;
             return( EXIT_SUCCESS ) ;
-            */
     }//End of extensive Debug
+     */
 }//End of main()

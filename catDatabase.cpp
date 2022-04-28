@@ -10,14 +10,18 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "catDatabase.h"
-#include <string.h>     //Define strings
-#include <stdbool.h>    //Defines the boolean datatype
-#include <stdio.h>      //Define stderr
-#include <stdlib.h>     //Define atoi
+#include "Cat.h"
+#include <cstring>     //Define strings
+#include <cstdio>      //Define stderr
+#include <cstdlib>     //Define atoi
 
-//This keeps track of the current number of cats. Use externally with "extern NumCats currentCatNum;"
-NumCats currentCatNum = 0;
 
+//The pointer to nullptr that indicates the end of the linked list
+Cat* catDatabaseHeadPointer = nullptr ;
+CurrentCatNum currentCatNum= 0;
+
+
+/*----------------------------------------------------------------------------------------------------------------------
 //This creates the main array(catdb) that holds [MAX_CATS] number of cats. Values initialized to 0
 struct Cat catdb[MAX_CATS]; //This does not declare a struct! Struct just says Cat is type struct. This does however make(allocate memory) the db of size [Max_CATS]
 
@@ -90,7 +94,7 @@ bool isCollarValid(const Color collarColor1, const Color collarColor2){
 }//End of isCollarValid
 
 bool isFixingCatPossible(const NumCats index){
-    if(catdb[index].isFixed == true){
+    if(catdb[index].isFixed){
         return false;//False because cat has already been fixed
     }
     return true;
@@ -105,11 +109,10 @@ Birthday makeBirthday(const char birthdayString[]){ //return a struct tm (tydef 
     int i = 0;
     strcpy(birthdayBuffer, birthdayString);//strtok modifies a string directly; copy it to prevent overwriting
     birthdayArray[i] = strtok(birthdayBuffer," ");//get & set the first token(pointer) in the string to array.
-    while( birthdayArray[i] != NULL){ //Fill the array with elements until there are none left
-        birthdayArray[++i] = strtok(NULL," ");
+    while( birthdayArray[i] != nullptr){ //Fill the array with elements until there are none left
+        birthdayArray[++i] = strtok(nullptr," ");
     }//End of while
     birthdayArray[1][strlen(birthdayArray[1])-1] ='\0';//Removes comma from the day field.
-
     //This code sets the birth month to an int that can be interpreted by the tm function
     if(strcmp(birthdayArray[0],"Jan") == 0 || strcmp(birthdayArray[0],"January") == 0){
         birthdayArray[0] = (char*) "0";
@@ -138,7 +141,6 @@ Birthday makeBirthday(const char birthdayString[]){ //return a struct tm (tydef 
     } else{
         birthdayArray[0] = (char*)"-1";
     }
-
     //This code constructs the birthday array with the info we've collected/formatted
     Birthday birthday;
     birthday.tm_mon  = atoi(birthdayArray[0]);
@@ -146,7 +148,6 @@ Birthday makeBirthday(const char birthdayString[]){ //return a struct tm (tydef 
     birthday.tm_year = atoi(birthdayArray[2])-1900;
     return birthday;
     //printf("Birthday: %s\n",asctime(&birthday));
-
 }//End of makeBirthday
 
 bool isBirthdayValid(Birthday birthday){
@@ -172,10 +173,11 @@ bool isBirthdayValid(Birthday birthday){
         fprintf(stderr, "%s: February doesn't have %d days.\n", PROGRAM_NAME, birthday.tm_mday);
         return false;
     }
-    time_t currentTimeInSec = time(NULL);//Sets currentTimeInSec to current time
+    time_t currentTimeInSec = time(nullptr);//Sets currentTimeInSec to current time
     if(currentTimeInSec < mktime(&birthday)){ // If the current time since epoch is less than the cats birthday time since epoch
         fprintf(stderr, "%s: The cat hasn't been born yet.\n", PROGRAM_NAME);
         return false;
     }
     return true;
 }//End of isBirthdayValid
+----------------------------------------------------------------------------------------------------------------------*/
